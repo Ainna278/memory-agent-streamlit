@@ -43,7 +43,9 @@ if user_input:
     # Teaching mode
     if user_input.lower().startswith("teach "):
         try:
-            _, key, value = user_input.split(" ", 2)
+            parts = user_input.split(" ", 2)  # splits only into 3 parts max
+            key = parts[1].strip()            # 'capital of france'
+            value = parts[2].strip()          # 'paris'
             memory.store_fact(key, value)
             response = f"Got it! I've learned that {key} is {value}."
         except:
