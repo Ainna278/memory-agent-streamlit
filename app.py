@@ -43,13 +43,24 @@ if user_input:
     # Teaching mode
     if user_input.lower().startswith("teach "):
         try:
-            parts = user_input.split(" ", 2)  # splits only into 3 parts max
-            key = parts[1].strip()            # 'capital of france'
-            value = parts[2].strip()          # 'paris'
+            teach_content = user_input[6:].strip()  # remove "teach "
+            
+            # Handle "is" as optional
+            if " is " in teach_content:
+                key, value = teach_content.split(" is ", 1)
+            else:
+                parts = teach_content.rsplit(" ", 1)
+                if len(parts) != 2:
+                    raise ValueError("Invalid format")
+                key, value = parts
+    
+            key = key.strip()
+            value = value.strip()
+    
             memory.store_fact(key, value)
-            response = f"Got it! I've learned that {key} is {value}."
-        except:
-            response = "⚠️ Format error. Use: teach [key] [value]"
+            response = f"Got it! I've learned that '{key}' is '{value}'."
+        except Exception as e:
+            response = "⚠️ Format error. Use: teach [key] [value] or teach [key] is [value]"
 
     # Asking mode
     else:
